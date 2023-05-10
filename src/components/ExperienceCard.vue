@@ -1,7 +1,9 @@
 <script setup lang="ts">
+import Experience from '@/types/experience.type';
+
 
 const props = defineProps<{
-  experience: any;
+  experience: Experience;
  }>();
 
 </script>

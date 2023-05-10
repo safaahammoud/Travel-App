@@ -1,32 +1,28 @@
 <script setup lang="ts">
 import { onMounted, ref } from "vue";
 
-import ExperienceCard from '@/components/ExperienceCard.vue';
-import Destination from '@/types/destination.type';
- 
+import { baseURL } from "@/consts/api.const";
+import ExperienceCard from "@/components/ExperienceCard.vue";
+import Destination from "@/types/destination.type";
+
 let destination = ref<Destination | null>(null);
 
 const props = withDefaults(
- defineProps<{
-  slug: string;
- }>(),
- {slug: ''},
+  defineProps<{
+    slug: string;
+  }>(),
+  { slug: "" }
 );
 
 onMounted(async () => {
-  const response = await fetch(
-    `https://travel-dummy-api.netlify.app/${props.slug}.json`
-  );
+  const response = await fetch(`${baseURL}/${props.slug}.json`);
 
   destination.value = await response.json();
 });
 </script>
 
 <template>
-  <section
-    v-if="destination"
-    class="destination"
-  > 
+  <section v-if="destination" class="destination">
     <h2>
       {{ destination?.name }}
     </h2>
@@ -41,10 +37,8 @@ onMounted(async () => {
   </section>
 
   <section>
-    <h2>
-      Top  Experiences in {{ destination?.name }}
-    </h2>
-    
+    <h2>Top Experiences in {{ destination?.name }}</h2>
+
     <div class="experiences">
       <div class="cards">
         <router-link
@@ -54,13 +48,13 @@ onMounted(async () => {
             name: 'experience',
             params: {
               experienceSlug: experience?.slug,
-            }
+            },
           }"
         >
-          <ExperienceCard :experience="experience"/>
+          <ExperienceCard :experience="experience" />
         </router-link>
       </div>
-      
+
       <router-view />
     </div>
   </section>
